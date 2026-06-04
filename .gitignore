@@ -178,3 +178,12 @@ sphinx_*/
 
 # Rust analyzer configuration
 /rust-project.json
+
+# COCO local outputs
+/out/
+*.img
+*.ext4
+*.deb
+*.tar.gz
+vmlinux*
+.tmp_*
