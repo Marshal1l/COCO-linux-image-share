@@ -1,9 +1,0 @@
-# drivers/image-server/Kconfig
-config IMAGE_SERVER
-    tristate "IMAGE SERVER Driver"
-    depends on ARM64
-    help
-      This module provides IMAGE SERVER interface
-      map mem between Linux and Realm Management Monitor (RMM).
-
-      If unsure, say N.

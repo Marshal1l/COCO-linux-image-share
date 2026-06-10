@@ -191,6 +191,17 @@ struct realm_config {
 #define SMC_RSI_HOST_CALL			SMC_RSI_FID(0x199)
 
 /*
+ * Image share object prototype FIDs. These are the formal V3 path and stay
+ * inside the RSI range.
+ */
+#define SMC_RSI_IMG_SHARE_CREATE	SMC_RSI_FID(0x1a0)
+#define SMC_RSI_IMG_SHARE_ADD_PAGES	SMC_RSI_FID(0x1a1)
+#define SMC_RSI_IMG_SHARE_SEAL		SMC_RSI_FID(0x1a2)
+#define SMC_RSI_IMG_SHARE_ATTACH	SMC_RSI_FID(0x1a3)
+#define SMC_RSI_IMG_SHARE_DETACH	SMC_RSI_FID(0x1a4)
+#define SMC_RSI_IMG_SHARE_DESTROY	SMC_RSI_FID(0x1a5)
+
+/*
  * Get Own Realm Descriptor
  *
  * ret0 == Status / error
@@ -198,16 +209,5 @@ struct realm_config {
  */
 #define SMC_RSI_GET_RD_ADDR SMC_RSI_FID(0x1b0)
 
-
-/*
- * Map Realm Memory Region to Another Realm
- *
- * arg1 == another realm rd_addr
- * arg2 == another realm cma ipa
- * arg3 == this realm cma ipa
- * arg4 == map memory size
- * ret0 == Status / error
- */
-#define SMC_RSI_MAP_MEM SMC_RSI_FID(0x1b1)
 
 #endif /* __ASM_RSI_SMC_H_ */

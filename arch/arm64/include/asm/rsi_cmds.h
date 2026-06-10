@@ -7,7 +7,12 @@
 #define __ASM_RSI_CMDS_H
 
 #include <linux/arm-smccc.h>
+#include <linux/const.h>
+#include <linux/errno.h>
+#include <linux/string.h>
+#include <linux/types.h>
 
+#include <asm/memory.h>
 #include <asm/rsi_smc.h>
 
 #define RSI_GRANULE_SHIFT		12
@@ -167,15 +172,82 @@ static inline unsigned long rsi_get_rd_addr(unsigned long *rd_addr)
 	return res.a0;
 }
 
-static inline unsigned long rsi_map_mem(unsigned long guest_rd_addr,
-					unsigned long guest_ipa,
-					unsigned long image_ipa,
-					unsigned long map_size)
+static inline unsigned long rsi_img_share_create(unsigned long desc_ipa,
+						 unsigned long *share_id)
 {
 	struct arm_smccc_res res;
 
-	arm_smccc_1_1_invoke(SMC_RSI_MAP_MEM, guest_rd_addr, guest_ipa,
-			     image_ipa, map_size, &res);
+	arm_smccc_1_1_invoke(SMC_RSI_IMG_SHARE_CREATE, desc_ipa, &res);
+
+	if (share_id)
+		*share_id = res.a1;
+	return res.a0;
+}
+
+static inline unsigned long rsi_img_share_add_pages(unsigned long share_id,
+						    unsigned long page_list_ipa,
+						    unsigned long start_page,
+						    unsigned long nr_pages,
+						    unsigned long *added_pages)
+{
+	struct arm_smccc_res res;
+
+	arm_smccc_1_1_invoke(SMC_RSI_IMG_SHARE_ADD_PAGES, share_id,
+			     page_list_ipa, start_page, nr_pages, &res);
+
+	if (added_pages)
+		*added_pages = res.a1;
+	return res.a0;
+}
+
+static inline unsigned long rsi_img_share_seal(unsigned long share_id,
+					       unsigned long meta_ipa,
+					       unsigned long flags,
+					       unsigned long reserved)
+{
+	struct arm_smccc_res res;
+
+	arm_smccc_1_1_invoke(SMC_RSI_IMG_SHARE_SEAL, share_id, meta_ipa,
+			     flags, reserved, &res);
+
+	return res.a0;
+}
+
+static inline unsigned long rsi_img_share_attach(unsigned long share_id,
+						 unsigned long source_rd_addr,
+						 unsigned long target_ipa,
+						 unsigned long file_offset,
+						 unsigned long size,
+						 unsigned long flags,
+						 unsigned long *mapped_pages)
+{
+	struct arm_smccc_res res;
+
+	arm_smccc_1_1_invoke(SMC_RSI_IMG_SHARE_ATTACH, share_id,
+			     source_rd_addr, target_ipa, file_offset, size,
+			     flags, &res);
+
+	if (mapped_pages)
+		*mapped_pages = res.a1;
+	return res.a0;
+}
+
+static inline unsigned long rsi_img_share_detach(unsigned long target_ipa,
+						 unsigned long size)
+{
+	struct arm_smccc_res res;
+
+	arm_smccc_1_1_invoke(SMC_RSI_IMG_SHARE_DETACH, target_ipa, size,
+			     &res);
+
+	return res.a0;
+}
+
+static inline unsigned long rsi_img_share_destroy(unsigned long share_id)
+{
+	struct arm_smccc_res res;
+
+	arm_smccc_1_1_invoke(SMC_RSI_IMG_SHARE_DESTROY, share_id, &res);
 
 	return res.a0;
 }

@@ -1,0 +1,10 @@
+config COCO_IMAGE_SHARE
+	tristate "CoCo image share driver"
+	depends on ARM64
+	help
+	  Provides a small ioctl interface for the Image CVM and Runtime CVM
+	  to exercise the RMM image-share object prototype. The Image CVM can
+	  register a file as non-contiguous source pages and seal it as a share
+	  object; the Runtime CVM can attach/detach read-only windows.
+
+	  This is a bring-up driver for the windowed block-device path.

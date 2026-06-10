@@ -196,4 +196,4 @@ obj-$(CONFIG_DPLL)		+= dpll/
 
 obj-$(CONFIG_S390)		+= s390/
 
-obj-$(CONFIG_IMAGE_SERVER)		+= image-server/
+obj-$(CONFIG_COCO_IMAGE_SHARE)		+= coco-image-share/

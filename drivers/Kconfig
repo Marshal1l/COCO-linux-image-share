@@ -245,6 +245,6 @@ source "drivers/cdx/Kconfig"
 
 source "drivers/dpll/Kconfig"
 
-source "drivers/image-server/Kconfig"
+source "drivers/coco-image-share/Kconfig"
 
 endmenu
